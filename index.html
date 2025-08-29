@@ -64,28 +64,6 @@
                             学習記録リセット
                         </button>
                     </div>
-
-                    <!-- スコア表示 -->
-                    <div class="score-board">
-                        <div class="score-item">
-                            <span class="label">今回の正解:</span>
-                            <span id="correct-count" class="count">0</span>
-                        </div>
-                        <div class="score-item">
-                            <span class="label">問題:</span>
-                            <span id="total-count" class="count">1</span>
-                        </div>
-                    </div>
-
-                    <!-- 進捗表示 -->
-                    <div class="progress-area">
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="progress-fill"></div>
-                        </div>
-                        <div class="progress-text">
-                            <span id="progress-text">0 / 10 問題完了</span>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Right Main Area -->
@@ -169,6 +147,9 @@
                             >
                                 次の問題
                             </button>
+                            <button id="new-game" class="btn btn-info">
+                                新しいセッション
+                            </button>
                         </div>
 
                         <!-- 結果表示 -->
@@ -191,34 +172,6 @@
                     </div>
                 </div>
             </main>
-
-            <!-- ゲーム完了モーダル -->
-            <div id="completion-modal" class="modal" style="display: none">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h2>🎉 おめでとうございます！ 🎉</h2>
-                    </div>
-                    <div class="modal-body">
-                        <p>すべての問題をクリアしました！</p>
-                        <div class="final-score">
-                            今回のスコア: <span id="final-score">0</span> /
-                            <span id="final-total">10</span>
-                        </div>
-                        <div class="accuracy">
-                            正答率: <span id="accuracy">0%</span>
-                        </div>
-                        <div class="session-new">
-                            今回新しく覚えた漢字:
-                            <span id="session-new">0</span>字
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button id="restart-game" class="btn btn-primary">
-                            もう一度挑戦
-                        </button>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <!-- 完全制覇達成モーダル -->

@@ -1,9 +1,6 @@
 class KanjiGame {
   constructor() {
     this.kanjiData = [];
-    this.currentQuestion = 0;
-    this.correctAnswers = 0;
-    this.totalQuestions = 10;
     this.selectedLeftRadical = null;
     this.selectedRightRadical = null;
     this.currentKanji = null;
@@ -242,7 +239,7 @@ class KanjiGame {
       .getElementById("next-question")
       .addEventListener("click", () => this.nextQuestion());
     document
-      .getElementById("restart-game")
+      .getElementById("new-game")
       .addEventListener("click", () => this.startNewGame());
     document
       .getElementById("reset-progress")
@@ -258,26 +255,21 @@ class KanjiGame {
       .addEventListener("click", () => {
         document.getElementById("complete-achievement-modal").style.display =
           "none";
-        this.startNewGame();
+        this.generateNewQuestion();
       });
   }
 
   startNewGame() {
-    this.currentQuestion = 0;
-    this.correctAnswers = 0;
     this.selectedLeftRadical = null;
     this.selectedRightRadical = null;
     this.sessionStats.attempted.clear();
     this.sessionStats.correct.clear();
 
     // Hide modals
-    document.getElementById("completion-modal").style.display = "none";
     document.getElementById("complete-achievement-modal").style.display =
       "none";
 
     // Reset UI
-    this.updateScoreBoard();
-    this.updateProgressBar();
     this.updateAchievementDisplay();
 
     this.generateNewQuestion();
@@ -341,10 +333,6 @@ class KanjiGame {
     document.getElementById("next-question").style.display = "none";
     document.getElementById("result-message").style.display = "none";
     document.getElementById("hint-message").style.display = "none";
-
-    // Update question counter
-    document.getElementById("total-count").textContent =
-      this.currentQuestion + 1;
   }
 
   generateRadicalOptions() {
@@ -525,7 +513,6 @@ class KanjiGame {
     const messageContent = resultMessage.querySelector(".message-content");
 
     if (isCorrect) {
-      this.correctAnswers++;
       this.sessionStats.correct.add(this.currentKanji.kanji);
 
       // Mark as learned
@@ -587,14 +574,8 @@ class KanjiGame {
     resultMessage.style.display = "block";
     document.getElementById("check-answer").disabled = true;
 
-    this.updateScoreBoard();
-
-    // Show next question button or complete game
-    if (this.currentQuestion < this.totalQuestions - 1) {
-      document.getElementById("next-question").style.display = "inline-block";
-    } else {
-      this.completeGame();
-    }
+    // Show next question button
+    document.getElementById("next-question").style.display = "inline-block";
   }
 
   highlightCorrectRadicals(correctRadicals) {
@@ -631,39 +612,7 @@ class KanjiGame {
   }
 
   nextQuestion() {
-    this.currentQuestion++;
-    this.updateProgressBar();
     this.generateNewQuestion();
-  }
-
-  updateScoreBoard() {
-    document.getElementById("correct-count").textContent = this.correctAnswers;
-  }
-
-  updateProgressBar() {
-    const progressPercentage =
-      (this.currentQuestion / this.totalQuestions) * 100;
-    document.getElementById("progress-fill").style.width =
-      `${progressPercentage}%`;
-    document.getElementById("progress-text").textContent =
-      `${this.currentQuestion} / ${this.totalQuestions} 問題完了`;
-  }
-
-  completeGame() {
-    const accuracy = Math.round(
-      (this.correctAnswers / this.totalQuestions) * 100,
-    );
-    const sessionNew = this.sessionStats.correct.size;
-
-    document.getElementById("final-score").textContent = this.correctAnswers;
-    document.getElementById("final-total").textContent = this.totalQuestions;
-    document.getElementById("accuracy").textContent = `${accuracy}%`;
-    document.getElementById("session-new").textContent = sessionNew;
-
-    // Show completion modal after a short delay
-    setTimeout(() => {
-      document.getElementById("completion-modal").style.display = "flex";
-    }, 2000);
   }
 
   showMessage(message, type = "info") {
