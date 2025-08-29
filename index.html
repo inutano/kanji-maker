@@ -16,162 +16,178 @@
             </header>
 
             <main>
-                <!-- 達成度表示 -->
-                <div class="achievement-board">
-                    <div class="achievement-header">
-                        <h3>🎯 学習の達成度</h3>
-                        <div
-                            id="achievement-badge"
-                            class="achievement-badge starter"
-                        >
-                            ✨ スタート
-                        </div>
-                    </div>
-                    <div class="achievement-stats">
-                        <div class="stat-item">
-                            <span class="label">学習済み:</span>
-                            <span id="learned-count" class="count">0</span>
-                            <span class="total"
-                                >/ <span id="total-kanji-count">200</span></span
-                            >
-                        </div>
-                        <div class="stat-item">
-                            <span class="label">達成率:</span>
-                            <span id="achievement-percentage" class="percentage"
-                                >0%</span
-                            >
-                        </div>
-                    </div>
-                    <div class="achievement-progress">
-                        <div class="achievement-bar">
+                <!-- Left Sidebar -->
+                <div class="left-sidebar">
+                    <!-- 達成度表示 -->
+                    <div class="achievement-board">
+                        <div class="achievement-header">
+                            <h3>🎯 学習の達成度</h3>
                             <div
-                                class="achievement-fill"
-                                id="achievement-fill"
-                            ></div>
+                                id="achievement-badge"
+                                class="achievement-badge starter"
+                            >
+                                ✨ スタート
+                            </div>
                         </div>
-                    </div>
-                    <button
-                        id="reset-progress"
-                        class="btn btn-danger reset-btn"
-                    >
-                        学習記録リセット
-                    </button>
-                </div>
-
-                <!-- スコア表示 -->
-                <div class="score-board">
-                    <div class="score-item">
-                        <span class="label">今回の正解:</span>
-                        <span id="correct-count" class="count">0</span>
-                    </div>
-                    <div class="score-item">
-                        <span class="label">問題:</span>
-                        <span id="total-count" class="count">1</span>
-                    </div>
-                </div>
-
-                <!-- 問題エリア -->
-                <div class="problem-area">
-                    <div class="question-box">
-                        <h2>この読み方の漢字を作ってください:</h2>
-                        <div class="reading-display">
-                            <span id="current-reading">よみかた</span>
+                        <div class="achievement-stats">
+                            <div class="stat-item">
+                                <span class="label">学習済み:</span>
+                                <span id="learned-count" class="count">0</span>
+                                <span class="total"
+                                    >/
+                                    <span id="total-kanji-count"
+                                        >200</span
+                                    ></span
+                                >
+                            </div>
+                            <div class="stat-item">
+                                <span class="label">達成率:</span>
+                                <span
+                                    id="achievement-percentage"
+                                    class="percentage"
+                                    >0%</span
+                                >
+                            </div>
                         </div>
-                        <div class="meaning-display">
-                            意味: <span id="current-meaning">意味</span>
-                        </div>
-                        <div id="kanji-status" class="kanji-status unlearned">
-                            🆕 未学習
-                        </div>
-                    </div>
-
-                    <!-- 漢字作成エリア -->
-                    <div class="kanji-builder">
-                        <h3>部首を組み合わせて漢字を作ろう</h3>
-                        <div class="kanji-construction">
-                            <div class="radical-slot" id="left-slot">
-                                <span class="slot-label">へん</span>
+                        <div class="achievement-progress">
+                            <div class="achievement-bar">
                                 <div
-                                    class="radical-display"
-                                    id="left-radical"
+                                    class="achievement-fill"
+                                    id="achievement-fill"
                                 ></div>
                             </div>
-                            <div class="plus-sign">+</div>
-                            <div class="radical-slot" id="right-slot">
-                                <span class="slot-label">つくり</span>
-                                <div
-                                    class="radical-display"
-                                    id="right-radical"
-                                ></div>
-                            </div>
-                            <div class="equals-sign">=</div>
-                            <div class="result-kanji" id="result-kanji">?</div>
                         </div>
-                    </div>
-
-                    <!-- 部首選択エリア -->
-                    <div class="radical-selection">
-                        <div class="radical-group">
-                            <h4>へん（左側の部首）</h4>
-                            <div class="radical-options" id="left-options">
-                                <!-- 部首オプションがJavaScriptで動的に生成される -->
-                            </div>
-                        </div>
-                        <div class="radical-group">
-                            <h4>つくり（右側の部首）</h4>
-                            <div class="radical-options" id="right-options">
-                                <!-- 部首オプションがJavaScriptで動的に生成される -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- アクションボタン -->
-                    <div class="action-buttons">
                         <button
-                            id="check-answer"
-                            class="btn btn-primary"
-                            disabled
+                            id="reset-progress"
+                            class="btn btn-danger reset-btn"
                         >
-                            答えを確認
+                            学習記録リセット
                         </button>
-                        <button id="hint-button" class="btn btn-secondary">
-                            ヒント
-                        </button>
-                        <button
-                            id="next-question"
-                            class="btn btn-success"
+                    </div>
+
+                    <!-- スコア表示 -->
+                    <div class="score-board">
+                        <div class="score-item">
+                            <span class="label">今回の正解:</span>
+                            <span id="correct-count" class="count">0</span>
+                        </div>
+                        <div class="score-item">
+                            <span class="label">問題:</span>
+                            <span id="total-count" class="count">1</span>
+                        </div>
+                    </div>
+
+                    <!-- 進捗表示 -->
+                    <div class="progress-area">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span id="progress-text">0 / 10 問題完了</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Main Area -->
+                <div class="right-main">
+                    <!-- 問題エリア -->
+                    <div class="problem-area">
+                        <div class="question-box">
+                            <h2>この読み方の漢字を作ってください:</h2>
+                            <div class="reading-display">
+                                <span id="current-reading">よみかた</span>
+                            </div>
+                            <div class="meaning-display">
+                                意味: <span id="current-meaning">意味</span>
+                            </div>
+                            <div
+                                id="kanji-status"
+                                class="kanji-status unlearned"
+                            >
+                                🆕 未学習
+                            </div>
+                        </div>
+
+                        <!-- 漢字作成エリア -->
+                        <div class="kanji-builder">
+                            <h3>部首を組み合わせて漢字を作ろう</h3>
+                            <div class="kanji-construction">
+                                <div class="radical-slot" id="left-slot">
+                                    <span class="slot-label">へん</span>
+                                    <div
+                                        class="radical-display"
+                                        id="left-radical"
+                                    ></div>
+                                </div>
+                                <div class="plus-sign">+</div>
+                                <div class="radical-slot" id="right-slot">
+                                    <span class="slot-label">つくり</span>
+                                    <div
+                                        class="radical-display"
+                                        id="right-radical"
+                                    ></div>
+                                </div>
+                                <div class="equals-sign">=</div>
+                                <div class="result-kanji" id="result-kanji">
+                                    ?
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 部首選択エリア -->
+                        <div class="radical-selection">
+                            <div class="radical-group">
+                                <h4>へん（左側の部首）</h4>
+                                <div class="radical-options" id="left-options">
+                                    <!-- 部首オプションがJavaScriptで動的に生成される -->
+                                </div>
+                            </div>
+                            <div class="radical-group">
+                                <h4>つくり（右側の部首）</h4>
+                                <div class="radical-options" id="right-options">
+                                    <!-- 部首オプションがJavaScriptで動的に生成される -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- アクションボタン -->
+                        <div class="action-buttons">
+                            <button
+                                id="check-answer"
+                                class="btn btn-primary"
+                                disabled
+                            >
+                                答えを確認
+                            </button>
+                            <button id="hint-button" class="btn btn-secondary">
+                                ヒント
+                            </button>
+                            <button
+                                id="next-question"
+                                class="btn btn-success"
+                                style="display: none"
+                            >
+                                次の問題
+                            </button>
+                        </div>
+
+                        <!-- 結果表示 -->
+                        <div
+                            id="result-message"
+                            class="result-message"
                             style="display: none"
                         >
-                            次の問題
-                        </button>
-                    </div>
+                            <div class="message-content"></div>
+                        </div>
 
-                    <!-- 結果表示 -->
-                    <div
-                        id="result-message"
-                        class="result-message"
-                        style="display: none"
-                    >
-                        <div class="message-content"></div>
-                    </div>
-
-                    <!-- ヒント表示 -->
-                    <div
-                        id="hint-message"
-                        class="hint-message"
-                        style="display: none"
-                    >
-                        <div class="hint-content"></div>
-                    </div>
-                </div>
-
-                <!-- 進捗表示 -->
-                <div class="progress-area">
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progress-fill"></div>
-                    </div>
-                    <div class="progress-text">
-                        <span id="progress-text">0 / 10 問題完了</span>
+                        <!-- ヒント表示 -->
+                        <div
+                            id="hint-message"
+                            class="hint-message"
+                            style="display: none"
+                        >
+                            <div class="hint-content"></div>
+                        </div>
                     </div>
                 </div>
             </main>
