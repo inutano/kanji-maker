@@ -48,6 +48,11 @@
                                     >0%</span
                                 >
                             </div>
+                            <div class="stat-item">
+                                <span class="label">ヒント使用:</span>
+                                <span id="hint-count" class="count">0</span>
+                                <span class="total">回</span>
+                            </div>
                         </div>
                         <div class="achievement-progress">
                             <div class="achievement-bar">
@@ -160,18 +165,31 @@
                         >
                             <div class="message-content"></div>
                         </div>
-
-                        <!-- ヒント表示 -->
-                        <div
-                            id="hint-message"
-                            class="hint-message"
-                            style="display: none"
-                        >
-                            <div class="hint-content"></div>
-                        </div>
                     </div>
                 </div>
             </main>
+        </div>
+
+        <!-- ヒントモーダル -->
+        <div id="hint-modal" class="modal" style="display: none">
+            <div class="modal-content hint-modal">
+                <div class="modal-header">
+                    <h2>💡 ヒント</h2>
+                    <button id="close-hint-modal" class="close-btn">
+                        &times;
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="hint-content" class="hint-content">
+                        <!-- ヒント内容がJavaScriptで挿入される -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="close-hint" class="btn btn-secondary">
+                        閉じる
+                    </button>
+                </div>
+            </div>
         </div>
 
         <!-- 完全制覇達成モーダル -->

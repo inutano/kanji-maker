@@ -5,6 +5,7 @@ class KanjiGame {
     this.selectedRightRadical = null;
     this.currentKanji = null;
     this.learnedKanji = new Set();
+    this.hintCount = 0;
     this.sessionStats = {
       attempted: new Set(),
       correct: new Set(),
@@ -107,9 +108,11 @@ class KanjiGame {
       try {
         const progress = JSON.parse(saved);
         this.learnedKanji = new Set(progress.learnedKanji || []);
+        this.hintCount = progress.hintCount || 0;
       } catch (error) {
         console.error("Failed to load progress:", error);
         this.learnedKanji = new Set();
+        this.hintCount = 0;
       }
     }
   }
@@ -117,6 +120,7 @@ class KanjiGame {
   saveProgress() {
     const progress = {
       learnedKanji: Array.from(this.learnedKanji),
+      hintCount: this.hintCount,
       lastUpdated: new Date().toISOString(),
     };
     localStorage.setItem("kanji-maker-progress", JSON.stringify(progress));
@@ -129,6 +133,7 @@ class KanjiGame {
       )
     ) {
       this.learnedKanji.clear();
+      this.hintCount = 0;
       localStorage.removeItem("kanji-maker-progress");
       this.updateAchievementDisplay();
       this.showMessage("学習記録をリセットしました！", "info");
@@ -149,6 +154,9 @@ class KanjiGame {
     // Update achievement progress bar
     document.getElementById("achievement-fill").style.width =
       `${achievementPercentage}%`;
+
+    // Update hint count
+    document.getElementById("hint-count").textContent = this.hintCount;
 
     // Update achievement badge
     const badge = document.getElementById("achievement-badge");
@@ -257,6 +265,14 @@ class KanjiGame {
           "none";
         this.generateNewQuestion();
       });
+    document
+      .getElementById("close-hint-modal")
+      .addEventListener("click", () => {
+        document.getElementById("hint-modal").style.display = "none";
+      });
+    document.getElementById("close-hint").addEventListener("click", () => {
+      document.getElementById("hint-modal").style.display = "none";
+    });
   }
 
   startNewGame() {
@@ -332,7 +348,7 @@ class KanjiGame {
     document.getElementById("check-answer").disabled = true;
     document.getElementById("next-question").style.display = "none";
     document.getElementById("result-message").style.display = "none";
-    document.getElementById("hint-message").style.display = "none";
+    document.getElementById("hint-modal").style.display = "none";
   }
 
   generateRadicalOptions() {
@@ -599,16 +615,21 @@ class KanjiGame {
   }
 
   showHint() {
-    const hintMessage = document.getElementById("hint-message");
-    const hintContent = hintMessage.querySelector(".hint-content");
+    // Increment hint count
+    this.hintCount++;
+    this.saveProgress();
+    this.updateAchievementDisplay();
 
+    const hintContent = document.getElementById("hint-content");
     hintContent.innerHTML = `
-      <div>💡 ヒント</div>
-      <div>正しい漢字は「${this.currentKanji.kanji}」です</div>
-      <div>必要な部首: ${this.currentKanji.radicals.join(" と ")}</div>
+      <div class="hint-kanji">正しい漢字は「<strong>${this.currentKanji.kanji}</strong>」です</div>
+      <div class="hint-radicals">必要な部首: <strong>${this.currentKanji.radicals.join(" と ")}</strong></div>
+      <div class="hint-meaning">意味: ${this.currentKanji.meaning}</div>
+      <div class="hint-reading">読み: ${this.currentKanji.reading}</div>
     `;
 
-    hintMessage.style.display = "block";
+    // Show hint modal
+    document.getElementById("hint-modal").style.display = "flex";
   }
 
   nextQuestion() {

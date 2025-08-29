@@ -138,20 +138,18 @@ main {
 }
 
 .achievement-stats {
-    display: flex;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 10px;
     margin-bottom: 20px;
-    flex-wrap: wrap;
-    gap: 15px;
 }
 
 .stat-item {
     text-align: center;
     background: #f8f9fa;
-    padding: 12px;
-    border-radius: 10px;
-    flex: 1;
-    min-width: 100px;
+    padding: 10px 8px;
+    border-radius: 8px;
+    min-width: 80px;
 }
 
 .stat-item .label {
@@ -566,10 +564,82 @@ main {
     }
 }
 
-.hint-message {
+/* Hint Modal */
+.hint-modal .modal-content {
+    max-width: 500px;
     background: #fef5e7;
     border: 2px solid #ed8936;
+}
+
+.hint-modal .modal-header {
+    background: #ed8936;
+    color: white;
+    padding: 15px 20px;
+    margin: -20px -20px 20px -20px;
+    border-radius: 15px 15px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hint-modal .modal-header h2 {
+    color: white;
+    margin: 0;
+    font-size: 1.3em;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5em;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.3s ease;
+}
+
+.close-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.hint-content {
     color: #744210;
+    line-height: 1.6;
+}
+
+.hint-kanji {
+    font-size: 1.4em;
+    margin-bottom: 15px;
+    text-align: center;
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #d69e2e;
+}
+
+.hint-radicals {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 6px;
+}
+
+.hint-meaning {
+    margin-bottom: 8px;
+    padding: 6px;
+}
+
+.hint-reading {
+    margin-bottom: 15px;
+    padding: 6px;
+    font-style: italic;
 }
 
 /* Modal */
@@ -815,6 +885,15 @@ main {
         float: none;
         width: 100%;
         margin-top: 10px;
+    }
+
+    .achievement-stats {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .stat-item {
+        padding: 8px;
     }
 }
 
