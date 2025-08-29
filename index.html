@@ -16,10 +16,52 @@
             </header>
 
             <main>
+                <!-- 達成度表示 -->
+                <div class="achievement-board">
+                    <div class="achievement-header">
+                        <h3>🎯 学習の達成度</h3>
+                        <div
+                            id="achievement-badge"
+                            class="achievement-badge starter"
+                        >
+                            ✨ スタート
+                        </div>
+                    </div>
+                    <div class="achievement-stats">
+                        <div class="stat-item">
+                            <span class="label">学習済み:</span>
+                            <span id="learned-count" class="count">0</span>
+                            <span class="total"
+                                >/ <span id="total-kanji-count">200</span></span
+                            >
+                        </div>
+                        <div class="stat-item">
+                            <span class="label">達成率:</span>
+                            <span id="achievement-percentage" class="percentage"
+                                >0%</span
+                            >
+                        </div>
+                    </div>
+                    <div class="achievement-progress">
+                        <div class="achievement-bar">
+                            <div
+                                class="achievement-fill"
+                                id="achievement-fill"
+                            ></div>
+                        </div>
+                    </div>
+                    <button
+                        id="reset-progress"
+                        class="btn btn-danger reset-btn"
+                    >
+                        学習記録リセット
+                    </button>
+                </div>
+
                 <!-- スコア表示 -->
                 <div class="score-board">
                     <div class="score-item">
-                        <span class="label">正解:</span>
+                        <span class="label">今回の正解:</span>
                         <span id="correct-count" class="count">0</span>
                     </div>
                     <div class="score-item">
@@ -37,6 +79,9 @@
                         </div>
                         <div class="meaning-display">
                             意味: <span id="current-meaning">意味</span>
+                        </div>
+                        <div id="kanji-status" class="kanji-status unlearned">
+                            🆕 未学習
                         </div>
                     </div>
 
@@ -140,11 +185,15 @@
                     <div class="modal-body">
                         <p>すべての問題をクリアしました！</p>
                         <div class="final-score">
-                            最終スコア: <span id="final-score">0</span> /
+                            今回のスコア: <span id="final-score">0</span> /
                             <span id="final-total">10</span>
                         </div>
                         <div class="accuracy">
                             正答率: <span id="accuracy">0%</span>
+                        </div>
+                        <div class="session-new">
+                            今回新しく覚えた漢字:
+                            <span id="session-new">0</span>字
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -152,6 +201,38 @@
                             もう一度挑戦
                         </button>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 完全制覇達成モーダル -->
+        <div
+            id="complete-achievement-modal"
+            class="modal"
+            style="display: none"
+        >
+            <div class="modal-content achievement-modal">
+                <div class="modal-header">
+                    <h2>🏆 完全制覇おめでとうございます！ 🏆</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="achievement-celebration">
+                        <div class="trophy">🏆</div>
+                        <p>小学3年生の漢字200字をすべて制覇しました！</p>
+                        <p>素晴らしい頑張りです！</p>
+                        <div class="celebration-message">
+                            部首の組み合わせで漢字を理解する力がついていますね。<br />
+                            この調子で漢字学習を続けていきましょう！
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="continue-learning" class="btn btn-primary">
+                        復習を続ける
+                    </button>
+                    <button id="close-complete-modal" class="btn btn-secondary">
+                        閉じる
+                    </button>
                 </div>
             </div>
         </div>

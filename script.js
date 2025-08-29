@@ -7,6 +7,11 @@ class KanjiGame {
     this.selectedLeftRadical = null;
     this.selectedRightRadical = null;
     this.currentKanji = null;
+    this.learnedKanji = new Set();
+    this.sessionStats = {
+      attempted: new Set(),
+      correct: new Set(),
+    };
 
     this.init();
   }
@@ -14,7 +19,9 @@ class KanjiGame {
   async init() {
     try {
       await this.loadKanjiData();
+      this.loadProgress();
       this.setupEventListeners();
+      this.updateAchievementDisplay();
       this.startNewGame();
     } catch (error) {
       console.error("Failed to initialize game:", error);
@@ -97,6 +104,133 @@ class KanjiGame {
     }
   }
 
+  loadProgress() {
+    const saved = localStorage.getItem("kanji-maker-progress");
+    if (saved) {
+      try {
+        const progress = JSON.parse(saved);
+        this.learnedKanji = new Set(progress.learnedKanji || []);
+      } catch (error) {
+        console.error("Failed to load progress:", error);
+        this.learnedKanji = new Set();
+      }
+    }
+  }
+
+  saveProgress() {
+    const progress = {
+      learnedKanji: Array.from(this.learnedKanji),
+      lastUpdated: new Date().toISOString(),
+    };
+    localStorage.setItem("kanji-maker-progress", JSON.stringify(progress));
+  }
+
+  resetProgress() {
+    if (
+      confirm(
+        "学習記録をリセットしますか？\nこれまでの進捗がすべて削除されます。",
+      )
+    ) {
+      this.learnedKanji.clear();
+      localStorage.removeItem("kanji-maker-progress");
+      this.updateAchievementDisplay();
+      this.showMessage("学習記録をリセットしました！", "info");
+    }
+  }
+
+  updateAchievementDisplay() {
+    const totalKanji = this.kanjiData.length;
+    const learnedCount = this.learnedKanji.size;
+    const achievementPercentage = Math.round((learnedCount / totalKanji) * 100);
+
+    // Update achievement stats
+    document.getElementById("learned-count").textContent = learnedCount;
+    document.getElementById("total-kanji-count").textContent = totalKanji;
+    document.getElementById("achievement-percentage").textContent =
+      `${achievementPercentage}%`;
+
+    // Update achievement progress bar
+    document.getElementById("achievement-fill").style.width =
+      `${achievementPercentage}%`;
+
+    // Update achievement badge
+    const badge = document.getElementById("achievement-badge");
+    if (achievementPercentage === 100) {
+      badge.textContent = "🏆 完全制覇！";
+      badge.className = "achievement-badge complete";
+    } else if (achievementPercentage >= 80) {
+      badge.textContent = "🌟 上級者";
+      badge.className = "achievement-badge advanced";
+    } else if (achievementPercentage >= 50) {
+      badge.textContent = "📚 中級者";
+      badge.className = "achievement-badge intermediate";
+    } else if (achievementPercentage >= 20) {
+      badge.textContent = "🌱 初級者";
+      badge.className = "achievement-badge beginner";
+    } else {
+      badge.textContent = "✨ スタート";
+      badge.className = "achievement-badge starter";
+    }
+
+    // Check for complete achievement
+    if (learnedCount === totalKanji && learnedCount > 0) {
+      this.showCompleteAchievement();
+    }
+  }
+
+  showCompleteAchievement() {
+    setTimeout(() => {
+      const modal = document.getElementById("complete-achievement-modal");
+      modal.style.display = "flex";
+
+      // Add confetti animation
+      this.createConfetti();
+    }, 1000);
+  }
+
+  createConfetti() {
+    const colors = [
+      "#ff6b6b",
+      "#4ecdc4",
+      "#45b7d1",
+      "#96ceb4",
+      "#ffeaa7",
+      "#dda0dd",
+    ];
+    const confettiContainer = document.createElement("div");
+    confettiContainer.id = "confetti-container";
+    confettiContainer.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    `;
+    document.body.appendChild(confettiContainer);
+
+    for (let i = 0; i < 100; i++) {
+      const confetti = document.createElement("div");
+      confetti.style.cssText = `
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: ${colors[Math.floor(Math.random() * colors.length)]};
+        top: -10px;
+        left: ${Math.random() * 100}%;
+        animation: confetti-fall ${2 + Math.random() * 3}s linear forwards;
+        transform: rotate(${Math.random() * 360}deg);
+      `;
+      confettiContainer.appendChild(confetti);
+    }
+
+    // Remove confetti after animation
+    setTimeout(() => {
+      document.body.removeChild(confettiContainer);
+    }, 5000);
+  }
+
   setupEventListeners() {
     document
       .getElementById("check-answer")
@@ -110,6 +244,22 @@ class KanjiGame {
     document
       .getElementById("restart-game")
       .addEventListener("click", () => this.startNewGame());
+    document
+      .getElementById("reset-progress")
+      .addEventListener("click", () => this.resetProgress());
+    document
+      .getElementById("close-complete-modal")
+      .addEventListener("click", () => {
+        document.getElementById("complete-achievement-modal").style.display =
+          "none";
+      });
+    document
+      .getElementById("continue-learning")
+      .addEventListener("click", () => {
+        document.getElementById("complete-achievement-modal").style.display =
+          "none";
+        this.startNewGame();
+      });
   }
 
   startNewGame() {
@@ -117,27 +267,64 @@ class KanjiGame {
     this.correctAnswers = 0;
     this.selectedLeftRadical = null;
     this.selectedRightRadical = null;
+    this.sessionStats.attempted.clear();
+    this.sessionStats.correct.clear();
 
-    // Hide completion modal
+    // Hide modals
     document.getElementById("completion-modal").style.display = "none";
+    document.getElementById("complete-achievement-modal").style.display =
+      "none";
 
     // Reset UI
     this.updateScoreBoard();
     this.updateProgressBar();
+    this.updateAchievementDisplay();
 
     this.generateNewQuestion();
   }
 
+  selectQuestionKanji() {
+    // Get unlearned kanji first
+    const unlearnedKanji = this.kanjiData.filter(
+      (kanji) => !this.learnedKanji.has(kanji.kanji),
+    );
+
+    // If all kanji are learned, select from all kanji
+    const candidateKanji =
+      unlearnedKanji.length > 0 ? unlearnedKanji : this.kanjiData;
+
+    // Avoid recently attempted kanji in this session when possible
+    const notAttempted = candidateKanji.filter(
+      (kanji) => !this.sessionStats.attempted.has(kanji.kanji),
+    );
+    const finalCandidates =
+      notAttempted.length > 0 ? notAttempted : candidateKanji;
+
+    const randomIndex = Math.floor(Math.random() * finalCandidates.length);
+    return finalCandidates[randomIndex];
+  }
+
   generateNewQuestion() {
-    // Select a random kanji for the current question
-    const randomIndex = Math.floor(Math.random() * this.kanjiData.length);
-    this.currentKanji = this.kanjiData[randomIndex];
+    // Select kanji prioritizing unlearned ones
+    this.currentKanji = this.selectQuestionKanji();
+    this.sessionStats.attempted.add(this.currentKanji.kanji);
 
     // Update question display
     document.getElementById("current-reading").textContent =
       this.currentKanji.reading;
     document.getElementById("current-meaning").textContent =
       this.currentKanji.meaning;
+
+    // Show learning status
+    const isLearned = this.learnedKanji.has(this.currentKanji.kanji);
+    const statusElement = document.getElementById("kanji-status");
+    if (isLearned) {
+      statusElement.textContent = "✅ 学習済み";
+      statusElement.className = "kanji-status learned";
+    } else {
+      statusElement.textContent = "🆕 未学習";
+      statusElement.className = "kanji-status unlearned";
+    }
 
     // Clear previous selections
     this.selectedLeftRadical = null;
@@ -339,12 +526,25 @@ class KanjiGame {
 
     if (isCorrect) {
       this.correctAnswers++;
+      this.sessionStats.correct.add(this.currentKanji.kanji);
+
+      // Mark as learned
+      const wasNewlyLearned = !this.learnedKanji.has(this.currentKanji.kanji);
+      this.learnedKanji.add(this.currentKanji.kanji);
+      this.saveProgress();
+
       resultMessage.className = "result-message correct";
-      messageContent.innerHTML = `
-                <div>🎉 正解！</div>
-                <div>「${this.currentKanji.kanji}」（${this.currentKanji.reading}）</div>
-                <div>${this.currentKanji.meaning}</div>
-            `;
+      let message = `
+        <div>🎉 正解！</div>
+        <div>「${this.currentKanji.kanji}」（${this.currentKanji.reading}）</div>
+        <div>${this.currentKanji.meaning}</div>
+      `;
+
+      if (wasNewlyLearned) {
+        message += `<div class="new-learning">✨ 新しく覚えました！</div>`;
+      }
+
+      messageContent.innerHTML = message;
 
       // Add bounce animation
       document.getElementById("result-kanji").classList.add("bounce");
@@ -358,14 +558,17 @@ class KanjiGame {
 
       // Highlight correct radicals
       this.highlightCorrectRadicals(correctRadicals);
+
+      // Update achievement display
+      this.updateAchievementDisplay();
     } else {
       resultMessage.className = "result-message incorrect";
       messageContent.innerHTML = `
-                <div>❌ 残念！</div>
-                <div>正解は「${this.currentKanji.kanji}」（${this.currentKanji.reading}）</div>
-                <div>${this.currentKanji.meaning}</div>
-                <div>正しい部首: ${correctRadicals.join(" + ")}</div>
-            `;
+        <div>❌ 残念！</div>
+        <div>正解は「${this.currentKanji.kanji}」（${this.currentKanji.reading}）</div>
+        <div>${this.currentKanji.meaning}</div>
+        <div>正しい部首: ${correctRadicals.join(" + ")}</div>
+      `;
 
       // Add shake animation
       document.getElementById("result-kanji").classList.add("shake");
@@ -419,10 +622,10 @@ class KanjiGame {
     const hintContent = hintMessage.querySelector(".hint-content");
 
     hintContent.innerHTML = `
-            <div>💡 ヒント</div>
-            <div>正しい漢字は「${this.currentKanji.kanji}」です</div>
-            <div>必要な部首: ${this.currentKanji.radicals.join(" と ")}</div>
-        `;
+      <div>💡 ヒント</div>
+      <div>正しい漢字は「${this.currentKanji.kanji}」です</div>
+      <div>必要な部首: ${this.currentKanji.radicals.join(" と ")}</div>
+    `;
 
     hintMessage.style.display = "block";
   }
@@ -450,15 +653,44 @@ class KanjiGame {
     const accuracy = Math.round(
       (this.correctAnswers / this.totalQuestions) * 100,
     );
+    const sessionNew = this.sessionStats.correct.size;
 
     document.getElementById("final-score").textContent = this.correctAnswers;
     document.getElementById("final-total").textContent = this.totalQuestions;
     document.getElementById("accuracy").textContent = `${accuracy}%`;
+    document.getElementById("session-new").textContent = sessionNew;
 
     // Show completion modal after a short delay
     setTimeout(() => {
       document.getElementById("completion-modal").style.display = "flex";
     }, 2000);
+  }
+
+  showMessage(message, type = "info") {
+    const messageDiv = document.createElement("div");
+    messageDiv.className = `floating-message ${type}`;
+    messageDiv.textContent = message;
+    messageDiv.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      border-radius: 8px;
+      color: white;
+      font-weight: 600;
+      z-index: 10000;
+      animation: slideInOut 3s ease-in-out forwards;
+    `;
+
+    if (type === "info") {
+      messageDiv.style.background = "#4299e1";
+    }
+
+    document.body.appendChild(messageDiv);
+
+    setTimeout(() => {
+      document.body.removeChild(messageDiv);
+    }, 3000);
   }
 
   shuffleArray(array) {
