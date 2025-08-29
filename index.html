@@ -170,8 +170,18 @@
 
                 <!-- Right Sidebar -->
                 <div class="right-sidebar">
+                    <!-- ランキング切り替えタブ -->
+                    <div class="ranking-tabs">
+                        <button id="fast-tab" class="tab-button active">
+                            ⚡ 最速
+                        </button>
+                        <button id="slow-tab" class="tab-button">
+                            🐌 苦手
+                        </button>
+                    </div>
+
                     <!-- 最速ランキング -->
-                    <div class="speed-ranking">
+                    <div class="speed-ranking" id="fast-ranking">
                         <div class="ranking-header">
                             <h3>⚡ 最速ランキング</h3>
                             <div class="ranking-subtitle">
@@ -179,6 +189,26 @@
                             </div>
                         </div>
                         <div class="ranking-list" id="speed-ranking-list">
+                            <div class="no-records">
+                                まだ記録がありません<br />
+                                頑張って問題を解いてみよう！
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 苦手ランキング -->
+                    <div
+                        class="slow-ranking"
+                        id="slow-ranking"
+                        style="display: none"
+                    >
+                        <div class="ranking-header">
+                            <h3>🐌 苦手ランキング</h3>
+                            <div class="ranking-subtitle">
+                                時間がかかった漢字トップ10
+                            </div>
+                        </div>
+                        <div class="ranking-list" id="slow-ranking-list">
                             <div class="no-records">
                                 まだ記録がありません<br />
                                 頑張って問題を解いてみよう！

@@ -262,6 +262,40 @@ main {
     gap: 15px;
 }
 
+/* Ranking Tabs */
+.ranking-tabs {
+    display: flex;
+    background: white;
+    border-radius: 10px;
+    padding: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+}
+
+.tab-button {
+    flex: 1;
+    padding: 8px 12px;
+    border: none;
+    background: transparent;
+    border-radius: 6px;
+    font-size: 0.9em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #718096;
+}
+
+.tab-button.active {
+    background: #4299e1;
+    color: white;
+    box-shadow: 0 2px 4px rgba(66, 153, 225, 0.3);
+}
+
+.tab-button:not(.active):hover {
+    background: #f7fafc;
+    color: #4a5568;
+}
+
 /* Problem Area */
 .problem-area {
     background: white;
@@ -664,13 +698,18 @@ main {
 }
 
 /* Speed Ranking */
-.speed-ranking {
+.speed-ranking,
+.slow-ranking {
     background: white;
     border-radius: 15px;
     padding: 20px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     border: 2px solid #e2e8f0;
     flex: 1;
+}
+
+.slow-ranking {
+    border-color: #fed7d7;
 }
 
 .ranking-header {
@@ -841,6 +880,46 @@ main {
     animation: pulse 2s infinite;
 }
 
+/* Slow Ranking Specific Styles */
+.slow-ranking .ranking-item.rank-1 {
+    background: linear-gradient(135deg, #fed7d7, #feb2b2);
+    border-color: #f56565;
+    animation: redGlow 2s infinite alternate;
+}
+
+.slow-ranking .ranking-item.rank-2 {
+    background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+    border-color: #e17055;
+}
+
+.slow-ranking .ranking-item.rank-3 {
+    background: linear-gradient(135deg, #fab1a0, #e17055);
+    border-color: #d63031;
+}
+
+@keyframes redGlow {
+    from {
+        box-shadow: 0 0 5px rgba(245, 101, 101, 0.5);
+    }
+    to {
+        box-shadow: 0 0 15px rgba(245, 101, 101, 0.8);
+    }
+}
+
+.slow-ranking .rank-1 .rank-number {
+    color: #c53030;
+    font-size: 1.1em;
+}
+
+.slow-ranking .rank-2 .rank-number,
+.slow-ranking .rank-3 .rank-number {
+    color: #744210;
+}
+
+.slow-ranking .ranking-time {
+    color: #e53e3e;
+}
+
 /* Modal */
 .modal {
     position: fixed;
@@ -964,9 +1043,22 @@ main {
     }
 
     .right-sidebar {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
+        display: flex;
+        flex-direction: column;
         gap: 15px;
+    }
+
+    .ranking-tabs {
+        order: 1;
+    }
+
+    .speed-ranking,
+    .slow-ranking {
+        order: 2;
+    }
+
+    .current-time {
+        order: 3;
     }
 }
 

@@ -146,6 +146,7 @@ class KanjiGame {
       localStorage.removeItem("kanji-maker-progress");
       this.updateAchievementDisplay();
       this.updateSpeedRanking();
+      this.updateSlowRanking();
       this.showMessage("学習記録をリセットしました！", "info");
     }
   }
@@ -320,13 +321,25 @@ class KanjiGame {
       };
       this.saveProgress();
       this.updateSpeedRanking();
+      this.updateSlowRanking();
       return true; // New record
     }
     return false;
   }
 
   updateSpeedRanking() {
-    const rankingList = document.getElementById("speed-ranking-list");
+    this.updateRanking("speed");
+  }
+
+  updateSlowRanking() {
+    this.updateRanking("slow");
+  }
+
+  updateRanking(type) {
+    const isSpeed = type === "speed";
+    const rankingList = document.getElementById(
+      isSpeed ? "speed-ranking-list" : "slow-ranking-list",
+    );
 
     // Convert records to array and sort by time
     const sortedRecords = Object.entries(this.speedRecords)
@@ -336,14 +349,16 @@ class KanjiGame {
         reading: record.reading,
         date: record.date,
       }))
-      .sort((a, b) => a.time - b.time)
+      .sort((a, b) => (isSpeed ? a.time - b.time : b.time - a.time))
       .slice(0, 10); // Top 10
 
     if (sortedRecords.length === 0) {
+      const message = isSpeed
+        ? "まだ記録がありません<br/>頑張って問題を解いてみよう！"
+        : "まだ記録がありません<br/>問題を解くと苦手な漢字がわかります";
       rankingList.innerHTML = `
         <div class="no-records">
-          まだ記録がありません<br/>
-          頑張って問題を解いてみよう！
+          ${message}
         </div>
       `;
       return;
@@ -352,13 +367,19 @@ class KanjiGame {
     rankingList.innerHTML = sortedRecords
       .map((record, index) => {
         const rankClass = index < 3 ? `rank-${index + 1}` : "";
+        const statusIcon = isSpeed ? "" : "📚";
+        const encouragement =
+          !isSpeed && index < 3
+            ? `<div class="practice-tip">復習がおすすめ！</div>`
+            : "";
         return `
           <div class="ranking-item ${rankClass}">
             <span class="rank-number">${index + 1}</span>
-            <span class="ranking-kanji">${record.kanji}</span>
+            <span class="ranking-kanji">${record.kanji} ${statusIcon}</span>
             <div class="ranking-info">
               <div class="ranking-reading">${record.reading}</div>
               <div class="ranking-time">${record.time.toFixed(1)}秒</div>
+              ${encouragement}
             </div>
           </div>
         `;
@@ -403,6 +424,31 @@ class KanjiGame {
     document.getElementById("close-hint").addEventListener("click", () => {
       document.getElementById("hint-modal").style.display = "none";
     });
+
+    // Tab switching event listeners
+    document.getElementById("fast-tab").addEventListener("click", () => {
+      this.showRankingTab("fast");
+    });
+    document.getElementById("slow-tab").addEventListener("click", () => {
+      this.showRankingTab("slow");
+    });
+  }
+
+  showRankingTab(tabType) {
+    // Update tab buttons
+    document
+      .querySelectorAll(".tab-button")
+      .forEach((btn) => btn.classList.remove("active"));
+    document.getElementById(`${tabType}-tab`).classList.add("active");
+
+    // Show/hide ranking sections
+    if (tabType === "fast") {
+      document.getElementById("fast-ranking").style.display = "block";
+      document.getElementById("slow-ranking").style.display = "none";
+    } else {
+      document.getElementById("fast-ranking").style.display = "none";
+      document.getElementById("slow-ranking").style.display = "block";
+    }
   }
 
   startNewGame() {
@@ -418,6 +464,7 @@ class KanjiGame {
     // Reset UI
     this.updateAchievementDisplay();
     this.updateSpeedRanking();
+    this.updateSlowRanking();
 
     this.generateNewQuestion();
   }
