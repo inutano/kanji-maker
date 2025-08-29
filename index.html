@@ -71,8 +71,8 @@
                     </div>
                 </div>
 
-                <!-- Right Main Area -->
-                <div class="right-main">
+                <!-- Center Main Area -->
+                <div class="center-main">
                     <!-- 問題エリア -->
                     <div class="problem-area">
                         <div class="question-box">
@@ -164,6 +164,40 @@
                             style="display: none"
                         >
                             <div class="message-content"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Sidebar -->
+                <div class="right-sidebar">
+                    <!-- 最速ランキング -->
+                    <div class="speed-ranking">
+                        <div class="ranking-header">
+                            <h3>⚡ 最速ランキング</h3>
+                            <div class="ranking-subtitle">
+                                素早く答えられた漢字トップ10
+                            </div>
+                        </div>
+                        <div class="ranking-list" id="speed-ranking-list">
+                            <div class="no-records">
+                                まだ記録がありません<br />
+                                頑張って問題を解いてみよう！
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 今回の解答時間 -->
+                    <div class="current-time">
+                        <div class="time-header">
+                            <h4>⏱️ 解答時間</h4>
+                        </div>
+                        <div class="time-display" id="current-time-display">
+                            <span class="time-value" id="current-time"
+                                >0.0秒</span
+                            >
+                        </div>
+                        <div class="time-status" id="time-status">
+                            問題開始でタイマーが始まります
                         </div>
                     </div>
                 </div>

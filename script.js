@@ -6,6 +6,11 @@ class KanjiGame {
     this.currentKanji = null;
     this.learnedKanji = new Set();
     this.hintCount = 0;
+    this.speedRecords = {};
+    this.startTime = null;
+    this.currentTime = 0;
+    this.isTimerRunning = false;
+    this.timerInterval = null;
     this.sessionStats = {
       attempted: new Set(),
       correct: new Set(),
@@ -109,10 +114,12 @@ class KanjiGame {
         const progress = JSON.parse(saved);
         this.learnedKanji = new Set(progress.learnedKanji || []);
         this.hintCount = progress.hintCount || 0;
+        this.speedRecords = progress.speedRecords || {};
       } catch (error) {
         console.error("Failed to load progress:", error);
         this.learnedKanji = new Set();
         this.hintCount = 0;
+        this.speedRecords = {};
       }
     }
   }
@@ -121,6 +128,7 @@ class KanjiGame {
     const progress = {
       learnedKanji: Array.from(this.learnedKanji),
       hintCount: this.hintCount,
+      speedRecords: this.speedRecords,
       lastUpdated: new Date().toISOString(),
     };
     localStorage.setItem("kanji-maker-progress", JSON.stringify(progress));
@@ -134,8 +142,10 @@ class KanjiGame {
     ) {
       this.learnedKanji.clear();
       this.hintCount = 0;
+      this.speedRecords = {};
       localStorage.removeItem("kanji-maker-progress");
       this.updateAchievementDisplay();
+      this.updateSpeedRanking();
       this.showMessage("学習記録をリセットしました！", "info");
     }
   }
@@ -236,6 +246,126 @@ class KanjiGame {
     }, 5000);
   }
 
+  startTimer() {
+    this.startTime = Date.now();
+    this.currentTime = 0;
+    this.isTimerRunning = true;
+
+    // Update display immediately
+    this.updateTimeDisplay();
+
+    // Start interval for live updates
+    this.timerInterval = setInterval(() => {
+      if (this.isTimerRunning) {
+        this.currentTime = (Date.now() - this.startTime) / 1000;
+        this.updateTimeDisplay();
+      }
+    }, 100);
+  }
+
+  stopTimer() {
+    this.isTimerRunning = false;
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+      this.timerInterval = null;
+    }
+    return this.currentTime;
+  }
+
+  updateTimeDisplay() {
+    const timeElement = document.getElementById("current-time");
+    const statusElement = document.getElementById("time-status");
+
+    if (!this.isTimerRunning && this.currentTime === 0) {
+      timeElement.textContent = "0.0秒";
+      statusElement.textContent = "問題開始でタイマーが始まります";
+      statusElement.className = "time-status";
+      return;
+    }
+
+    timeElement.textContent = `${this.currentTime.toFixed(1)}秒`;
+
+    if (this.isTimerRunning) {
+      statusElement.textContent = "解答中...";
+      statusElement.className = "time-status";
+    } else {
+      // Show status after answer
+      const kanji = this.currentKanji.kanji;
+      const currentRecord = this.speedRecords[kanji];
+
+      if (!currentRecord || this.currentTime < currentRecord.time) {
+        statusElement.textContent = "🏆 新記録！";
+        statusElement.className = "time-status record";
+      } else if (this.currentTime < 5) {
+        statusElement.textContent = "⚡ とても早い！";
+        statusElement.className = "time-status fast";
+      } else if (this.currentTime < 10) {
+        statusElement.textContent = "👍 いいペース";
+        statusElement.className = "time-status";
+      } else {
+        statusElement.textContent = "🐌 ゆっくり考えよう";
+        statusElement.className = "time-status slow";
+      }
+    }
+  }
+
+  updateSpeedRecord(kanji, time, reading) {
+    const currentRecord = this.speedRecords[kanji];
+
+    if (!currentRecord || time < currentRecord.time) {
+      this.speedRecords[kanji] = {
+        time: time,
+        reading: reading,
+        date: new Date().toISOString(),
+      };
+      this.saveProgress();
+      this.updateSpeedRanking();
+      return true; // New record
+    }
+    return false;
+  }
+
+  updateSpeedRanking() {
+    const rankingList = document.getElementById("speed-ranking-list");
+
+    // Convert records to array and sort by time
+    const sortedRecords = Object.entries(this.speedRecords)
+      .map(([kanji, record]) => ({
+        kanji: kanji,
+        time: record.time,
+        reading: record.reading,
+        date: record.date,
+      }))
+      .sort((a, b) => a.time - b.time)
+      .slice(0, 10); // Top 10
+
+    if (sortedRecords.length === 0) {
+      rankingList.innerHTML = `
+        <div class="no-records">
+          まだ記録がありません<br/>
+          頑張って問題を解いてみよう！
+        </div>
+      `;
+      return;
+    }
+
+    rankingList.innerHTML = sortedRecords
+      .map((record, index) => {
+        const rankClass = index < 3 ? `rank-${index + 1}` : "";
+        return `
+          <div class="ranking-item ${rankClass}">
+            <span class="rank-number">${index + 1}</span>
+            <span class="ranking-kanji">${record.kanji}</span>
+            <div class="ranking-info">
+              <div class="ranking-reading">${record.reading}</div>
+              <div class="ranking-time">${record.time.toFixed(1)}秒</div>
+            </div>
+          </div>
+        `;
+      })
+      .join("");
+  }
+
   setupEventListeners() {
     document
       .getElementById("check-answer")
@@ -287,6 +417,7 @@ class KanjiGame {
 
     // Reset UI
     this.updateAchievementDisplay();
+    this.updateSpeedRanking();
 
     this.generateNewQuestion();
   }
@@ -349,6 +480,9 @@ class KanjiGame {
     document.getElementById("next-question").style.display = "none";
     document.getElementById("result-message").style.display = "none";
     document.getElementById("hint-modal").style.display = "none";
+
+    // Start timer for new question
+    this.startTimer();
   }
 
   generateRadicalOptions() {
@@ -520,6 +654,9 @@ class KanjiGame {
   }
 
   checkAnswer() {
+    // Stop timer and get final time
+    const finalTime = this.stopTimer();
+
     const correctRadicals = this.currentKanji.radicals;
     const isCorrect =
       correctRadicals.includes(this.selectedLeftRadical) &&
@@ -531,20 +668,30 @@ class KanjiGame {
     if (isCorrect) {
       this.sessionStats.correct.add(this.currentKanji.kanji);
 
-      // Mark as learned
+      // Mark as learned and update speed record
       const wasNewlyLearned = !this.learnedKanji.has(this.currentKanji.kanji);
       this.learnedKanji.add(this.currentKanji.kanji);
-      this.saveProgress();
+
+      // Check for new speed record
+      const isNewRecord = this.updateSpeedRecord(
+        this.currentKanji.kanji,
+        finalTime,
+        this.currentKanji.reading,
+      );
 
       resultMessage.className = "result-message correct";
       let message = `
-        <div>🎉 正解！</div>
+        <div>🎉 正解！ <span style="color: #48bb78;">(${finalTime.toFixed(1)}秒)</span></div>
         <div>「${this.currentKanji.kanji}」（${this.currentKanji.reading}）</div>
         <div>${this.currentKanji.meaning}</div>
       `;
 
       if (wasNewlyLearned) {
         message += `<div class="new-learning">✨ 新しく覚えました！</div>`;
+      }
+
+      if (isNewRecord) {
+        message += `<div class="new-record">🏆 新記録達成！</div>`;
       }
 
       messageContent.innerHTML = message;
@@ -633,6 +780,12 @@ class KanjiGame {
   }
 
   nextQuestion() {
+    // Reset timer display
+    document.getElementById("current-time").textContent = "0.0秒";
+    document.getElementById("time-status").textContent =
+      "問題開始でタイマーが始まります";
+    document.getElementById("time-status").className = "time-status";
+
     this.generateNewQuestion();
   }
 
