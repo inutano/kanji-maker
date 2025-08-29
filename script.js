@@ -11,6 +11,7 @@ class KanjiGame {
     this.currentTime = 0;
     this.isTimerRunning = false;
     this.timerInterval = null;
+    this.currentGrade = 3; // デフォルトは3年生
     this.sessionStats = {
       attempted: new Set(),
       correct: new Set(),
@@ -21,10 +22,11 @@ class KanjiGame {
 
   async init() {
     try {
-      await this.loadKanjiData();
+      await this.loadKanjiData(this.currentGrade);
       this.loadProgress();
       this.setupEventListeners();
       this.updateAchievementDisplay();
+      this.updateCurrentGradeDisplay();
       this.startNewGame();
     } catch (error) {
       console.error("Failed to initialize game:", error);
@@ -32,14 +34,14 @@ class KanjiGame {
     }
   }
 
-  async loadKanjiData() {
+  async loadKanjiData(grade = 3) {
     try {
-      const response = await fetch("./data/grade3_kanji.json");
+      const response = await fetch(`./data/grade${grade}_kanji.json`);
       if (!response.ok) {
         throw new Error("Failed to load kanji data");
       }
       const data = await response.json();
-      this.kanjiData = data.grade3_kanji;
+      this.kanjiData = data[`grade${grade}_kanji`];
     } catch (error) {
       // Fallback data in case the JSON file can't be loaded
       this.kanjiData = [
@@ -108,7 +110,9 @@ class KanjiGame {
   }
 
   loadProgress() {
-    const saved = localStorage.getItem("kanji-maker-progress");
+    const saved = localStorage.getItem(
+      `kanji-maker-progress-grade${this.currentGrade}`,
+    );
     if (saved) {
       try {
         const progress = JSON.parse(saved);
@@ -121,6 +125,11 @@ class KanjiGame {
         this.hintCount = 0;
         this.speedRecords = {};
       }
+    } else {
+      // 学年別データがない場合は初期化
+      this.learnedKanji = new Set();
+      this.hintCount = 0;
+      this.speedRecords = {};
     }
   }
 
@@ -129,25 +138,32 @@ class KanjiGame {
       learnedKanji: Array.from(this.learnedKanji),
       hintCount: this.hintCount,
       speedRecords: this.speedRecords,
+      grade: this.currentGrade,
       lastUpdated: new Date().toISOString(),
     };
-    localStorage.setItem("kanji-maker-progress", JSON.stringify(progress));
+    localStorage.setItem(
+      `kanji-maker-progress-grade${this.currentGrade}`,
+      JSON.stringify(progress),
+    );
   }
 
   resetProgress() {
     if (
       confirm(
-        "学習記録をリセットしますか？\nこれまでの進捗がすべて削除されます。",
+        `${this.currentGrade}年生の学習記録をリセットしますか？\nこれまでの進捗がすべて削除されます。`,
       )
     ) {
       this.learnedKanji.clear();
       this.hintCount = 0;
       this.speedRecords = {};
-      localStorage.removeItem("kanji-maker-progress");
+      localStorage.removeItem(`kanji-maker-progress-grade${this.currentGrade}`);
       this.updateAchievementDisplay();
       this.updateSpeedRanking();
       this.updateSlowRanking();
-      this.showMessage("学習記録をリセットしました！", "info");
+      this.showMessage(
+        `${this.currentGrade}年生の学習記録をリセットしました！`,
+        "info",
+      );
     }
   }
 
@@ -388,6 +404,15 @@ class KanjiGame {
   }
 
   setupEventListeners() {
+    // 学年選択の変更イベント
+    const gradeSelect = document.getElementById("grade-select");
+    gradeSelect.addEventListener("change", async (e) => {
+      const newGrade = parseInt(e.target.value);
+      await this.changeGrade(newGrade);
+    });
+
+    // 初期学年の設定
+    gradeSelect.value = this.currentGrade.toString();
     document
       .getElementById("check-answer")
       .addEventListener("click", () => this.checkAnswer());
@@ -449,6 +474,33 @@ class KanjiGame {
       document.getElementById("fast-ranking").style.display = "none";
       document.getElementById("slow-ranking").style.display = "block";
     }
+  }
+
+  async changeGrade(grade) {
+    this.currentGrade = grade;
+
+    // 新しい学年の漢字データを読み込み
+    await this.loadKanjiData(grade);
+
+    // 進捗データを学年別に読み込み直し
+    this.loadProgress();
+
+    // 表示を更新
+    this.updateAchievementDisplay();
+    this.updateCurrentGradeDisplay();
+
+    // 新しいゲームを開始
+    this.startNewGame();
+  }
+
+  updateCurrentGradeDisplay() {
+    const gradeDisplay = document.getElementById("current-grade-display");
+    if (gradeDisplay) {
+      gradeDisplay.textContent = `現在：${this.currentGrade}年生`;
+    }
+
+    // ページタイトルも更新
+    document.title = `漢字メーカー - 小学校${this.currentGrade}年生`;
   }
 
   startNewGame() {

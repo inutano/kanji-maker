@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>漢字メーカー - 小学3年生</title>
+        <title>漢字メーカー - 小学校漢字学習</title>
         <link rel="stylesheet" href="styles.css" />
     </head>
     <body>
@@ -13,6 +13,18 @@
                 <p class="subtitle">
                     「へん」と「つくり」を組み合わせて正しい漢字を作ろう！
                 </p>
+                <!-- 学年選択 -->
+                <div class="grade-selector">
+                    <label for="grade-select">学年を選択：</label>
+                    <select id="grade-select" class="grade-select">
+                        <option value="1">1年生 (80字)</option>
+                        <option value="2">2年生 (160字)</option>
+                        <option value="3" selected>3年生 (200字)</option>
+                        <option value="4">4年生 (202字)</option>
+                        <option value="5">5年生 (193字)</option>
+                        <option value="6">6年生 (191字)</option>
+                    </select>
+                </div>
             </header>
 
             <main>
@@ -68,6 +80,9 @@
                         >
                             学習記録リセット
                         </button>
+                        <div class="current-grade-info">
+                            <span id="current-grade-display">現在：3年生</span>
+                        </div>
                     </div>
                 </div>
 

@@ -1,0 +1,388 @@
+{
+  "grade2_kanji": [
+    {
+      "kanji": "引",
+      "reading": "ひく",
+      "meaning": "pull",
+      "radicals": ["弓", "丨"]
+    },
+    {
+      "kanji": "羽",
+      "reading": "はね",
+      "meaning": "feather",
+      "radicals": ["羽", ""]
+    },
+    {
+      "kanji": "雲",
+      "reading": "くも",
+      "meaning": "cloud",
+      "radicals": ["雨", "云"]
+    },
+    {
+      "kanji": "園",
+      "reading": "えん",
+      "meaning": "garden",
+      "radicals": ["囗", "袁"]
+    },
+    {
+      "kanji": "遠",
+      "reading": "とおい",
+      "meaning": "far",
+      "radicals": ["辶", "袁"]
+    },
+    {
+      "kanji": "何",
+      "reading": "なに",
+      "meaning": "what",
+      "radicals": ["亻", "可"]
+    },
+    {
+      "kanji": "科",
+      "reading": "か",
+      "meaning": "subject",
+      "radicals": ["禾", "斗"]
+    },
+    {
+      "kanji": "夏",
+      "reading": "なつ",
+      "meaning": "summer",
+      "radicals": ["夂", "頁"]
+    },
+    {
+      "kanji": "家",
+      "reading": "いえ",
+      "meaning": "house",
+      "radicals": ["宀", "豕"]
+    },
+    {
+      "kanji": "歌",
+      "reading": "うた",
+      "meaning": "song",
+      "radicals": ["可", "欠"]
+    },
+    {
+      "kanji": "画",
+      "reading": "が",
+      "meaning": "picture",
+      "radicals": ["田", "聿"]
+    },
+    {
+      "kanji": "回",
+      "reading": "まわる",
+      "meaning": "turn",
+      "radicals": ["囗", "口"]
+    },
+    {
+      "kanji": "会",
+      "reading": "あう",
+      "meaning": "meet",
+      "radicals": ["人", "云"]
+    },
+    {
+      "kanji": "海",
+      "reading": "うみ",
+      "meaning": "sea",
+      "radicals": ["氵", "毎"]
+    },
+    {
+      "kanji": "絵",
+      "reading": "え",
+      "meaning": "picture",
+      "radicals": ["糸", "会"]
+    },
+    {
+      "kanji": "外",
+      "reading": "そと",
+      "meaning": "outside",
+      "radicals": ["夕", "卜"]
+    },
+    {
+      "kanji": "角",
+      "reading": "かど",
+      "meaning": "corner",
+      "radicals": ["角", ""]
+    },
+    {
+      "kanji": "楽",
+      "reading": "たのしい",
+      "meaning": "fun",
+      "radicals": ["木", "白"]
+    },
+    {
+      "kanji": "活",
+      "reading": "かつ",
+      "meaning": "active",
+      "radicals": ["氵", "舌"]
+    },
+    {
+      "kanji": "間",
+      "reading": "あいだ",
+      "meaning": "between",
+      "radicals": ["門", "日"]
+    },
+    {
+      "kanji": "丸",
+      "reading": "まる",
+      "meaning": "circle",
+      "radicals": ["九", "丶"]
+    },
+    {
+      "kanji": "岩",
+      "reading": "いわ",
+      "meaning": "rock",
+      "radicals": ["山", "石"]
+    },
+    {
+      "kanji": "顔",
+      "reading": "かお",
+      "meaning": "face",
+      "radicals": ["彦", "頁"]
+    },
+    {
+      "kanji": "汽",
+      "reading": "き",
+      "meaning": "steam",
+      "radicals": ["氵", "气"]
+    },
+    {
+      "kanji": "記",
+      "reading": "き",
+      "meaning": "record",
+      "radicals": ["言", "己"]
+    },
+    {
+      "kanji": "帰",
+      "reading": "かえる",
+      "meaning": "return",
+      "radicals": ["刀", "帚"]
+    },
+    {
+      "kanji": "弓",
+      "reading": "ゆみ",
+      "meaning": "bow",
+      "radicals": ["弓", ""]
+    },
+    {
+      "kanji": "牛",
+      "reading": "うし",
+      "meaning": "cow",
+      "radicals": ["牛", ""]
+    },
+    {
+      "kanji": "魚",
+      "reading": "さかな",
+      "meaning": "fish",
+      "radicals": ["魚", ""]
+    },
+    {
+      "kanji": "京",
+      "reading": "きょう",
+      "meaning": "capital",
+      "radicals": ["亠", "口"]
+    },
+    {
+      "kanji": "強",
+      "reading": "つよい",
+      "meaning": "strong",
+      "radicals": ["弓", "虫"]
+    },
+    {
+      "kanji": "教",
+      "reading": "おしえる",
+      "meaning": "teach",
+      "radicals": ["孝", "攵"]
+    },
+    {
+      "kanji": "近",
+      "reading": "ちかい",
+      "meaning": "near",
+      "radicals": ["辶", "斤"]
+    },
+    {
+      "kanji": "兄",
+      "reading": "あに",
+      "meaning": "older brother",
+      "radicals": ["口", "儿"]
+    },
+    {
+      "kanji": "形",
+      "reading": "かたち",
+      "meaning": "shape",
+      "radicals": ["开", "彡"]
+    },
+    {
+      "kanji": "計",
+      "reading": "はかる",
+      "meaning": "measure",
+      "radicals": ["言", "十"]
+    },
+    {
+      "kanji": "元",
+      "reading": "もと",
+      "meaning": "origin",
+      "radicals": ["二", "儿"]
+    },
+    {
+      "kanji": "言",
+      "reading": "いう",
+      "meaning": "say",
+      "radicals": ["言", ""]
+    },
+    {
+      "kanji": "原",
+      "reading": "はら",
+      "meaning": "field",
+      "radicals": ["厂", "白"]
+    },
+    {
+      "kanji": "戸",
+      "reading": "と",
+      "meaning": "door",
+      "radicals": ["戸", ""]
+    },
+    {
+      "kanji": "古",
+      "reading": "ふるい",
+      "meaning": "old",
+      "radicals": ["十", "口"]
+    },
+    {
+      "kanji": "午",
+      "reading": "ご",
+      "meaning": "noon",
+      "radicals": ["午", ""]
+    },
+    {
+      "kanji": "後",
+      "reading": "あと",
+      "meaning": "after",
+      "radicals": ["彳", "夂"]
+    },
+    {
+      "kanji": "語",
+      "reading": "ことば",
+      "meaning": "language",
+      "radicals": ["言", "吾"]
+    },
+    {
+      "kanji": "工",
+      "reading": "こう",
+      "meaning": "work",
+      "radicals": ["工", ""]
+    },
+    {
+      "kanji": "公",
+      "reading": "おおやけ",
+      "meaning": "public",
+      "radicals": ["八", "厶"]
+    },
+    {
+      "kanji": "広",
+      "reading": "ひろい",
+      "meaning": "wide",
+      "radicals": ["广", "厶"]
+    },
+    {
+      "kanji": "交",
+      "reading": "まじわる",
+      "meaning": "cross",
+      "radicals": ["亠", "父"]
+    },
+    {
+      "kanji": "光",
+      "reading": "ひかり",
+      "meaning": "light",
+      "radicals": ["⺌", "儿"]
+    },
+    {
+      "kanji": "考",
+      "reading": "かんがえる",
+      "meaning": "think",
+      "radicals": ["老", ""]
+    },
+    {
+      "kanji": "行",
+      "reading": "いく",
+      "meaning": "go",
+      "radicals": ["彳", "亍"]
+    },
+    {
+      "kanji": "高",
+      "reading": "たかい",
+      "meaning": "high",
+      "radicals": ["亠", "口"]
+    },
+    {
+      "kanji": "黄",
+      "reading": "きいろ",
+      "meaning": "yellow",
+      "radicals": ["黄", ""]
+    },
+    {
+      "kanji": "合",
+      "reading": "あう",
+      "meaning": "fit",
+      "radicals": ["人", "一"]
+    },
+    {
+      "kanji": "谷",
+      "reading": "たに",
+      "meaning": "valley",
+      "radicals": ["八", "口"]
+    },
+    {
+      "kanji": "国",
+      "reading": "くに",
+      "meaning": "country",
+      "radicals": ["囗", "玉"]
+    },
+    {
+      "kanji": "黒",
+      "reading": "くろ",
+      "meaning": "black",
+      "radicals": ["黒", ""]
+    },
+    {
+      "kanji": "今",
+      "reading": "いま",
+      "meaning": "now",
+      "radicals": ["人", "一"]
+    },
+    {
+      "kanji": "才",
+      "reading": "さい",
+      "meaning": "talent",
+      "radicals": ["才", ""]
+    },
+    {
+      "kanji": "細",
+      "reading": "ほそい",
+      "meaning": "thin",
+      "radicals": ["糸", "田"]
+    },
+    {
+      "kanji": "作",
+      "reading": "つくる",
+      "meaning": "make",
+      "radicals": ["亻", "乍"]
+    },
+    {
+      "kanji": "算",
+      "reading": "さん",
+      "meaning": "calculate",
+      "radicals": ["竹", "弄"]
+    },
+    {
+      "kanji": "止",
+      "reading": "とまる",
+      "meaning": "stop",
+      "radicals": ["止", ""]
+    },
+    {
+      "kanji": "市",
+      "reading": "し",
+      "meaning": "city",
+      "radicals": ["亠", "巾"]
+    }
+  ]
+}

@@ -1,0 +1,238 @@
+{
+  "grade1_kanji": [
+    {
+      "kanji": "休",
+      "reading": "やすむ",
+      "meaning": "rest",
+      "radicals": ["亻", "木"]
+    },
+    {
+      "kanji": "先",
+      "reading": "さき",
+      "meaning": "ahead, first",
+      "radicals": ["儿", "土"]
+    },
+    {
+      "kanji": "名",
+      "reading": "なまえ",
+      "meaning": "name",
+      "radicals": ["口", "夕"]
+    },
+    {
+      "kanji": "字",
+      "reading": "じ",
+      "meaning": "character",
+      "radicals": ["宀", "子"]
+    },
+    {
+      "kanji": "学",
+      "reading": "まなぶ",
+      "meaning": "study",
+      "radicals": ["子", "冖"]
+    },
+    {
+      "kanji": "校",
+      "reading": "がっこう",
+      "meaning": "school",
+      "radicals": ["木", "交"]
+    },
+    {
+      "kanji": "村",
+      "reading": "むら",
+      "meaning": "village",
+      "radicals": ["木", "寸"]
+    },
+    {
+      "kanji": "町",
+      "reading": "まち",
+      "meaning": "town",
+      "radicals": ["田", "丁"]
+    },
+    {
+      "kanji": "森",
+      "reading": "もり",
+      "meaning": "forest",
+      "radicals": ["木", "木"]
+    },
+    {
+      "kanji": "林",
+      "reading": "はやし",
+      "meaning": "woods",
+      "radicals": ["木", "木"]
+    },
+    {
+      "kanji": "花",
+      "reading": "はな",
+      "meaning": "flower",
+      "radicals": ["艹", "化"]
+    },
+    {
+      "kanji": "草",
+      "reading": "くさ",
+      "meaning": "grass",
+      "radicals": ["艹", "早"]
+    },
+    {
+      "kanji": "虫",
+      "reading": "むし",
+      "meaning": "insect",
+      "radicals": ["虫", ""]
+    },
+    {
+      "kanji": "貝",
+      "reading": "かい",
+      "meaning": "shell",
+      "radicals": ["貝", ""]
+    },
+    {
+      "kanji": "見",
+      "reading": "みる",
+      "meaning": "see",
+      "radicals": ["目", "儿"]
+    },
+    {
+      "kanji": "気",
+      "reading": "き",
+      "meaning": "spirit, air",
+      "radicals": ["气", "米"]
+    },
+    {
+      "kanji": "竹",
+      "reading": "たけ",
+      "meaning": "bamboo",
+      "radicals": ["竹", ""]
+    },
+    {
+      "kanji": "糸",
+      "reading": "いと",
+      "meaning": "thread",
+      "radicals": ["糸", ""]
+    },
+    {
+      "kanji": "車",
+      "reading": "くるま",
+      "meaning": "car",
+      "radicals": ["車", ""]
+    },
+    {
+      "kanji": "足",
+      "reading": "あし",
+      "meaning": "foot",
+      "radicals": ["足", ""]
+    },
+    {
+      "kanji": "音",
+      "reading": "おと",
+      "meaning": "sound",
+      "radicals": ["音", ""]
+    },
+    {
+      "kanji": "雨",
+      "reading": "あめ",
+      "meaning": "rain",
+      "radicals": ["雨", ""]
+    },
+    {
+      "kanji": "雲",
+      "reading": "くも",
+      "meaning": "cloud",
+      "radicals": ["雨", "云"]
+    },
+    {
+      "kanji": "青",
+      "reading": "あお",
+      "meaning": "blue",
+      "radicals": ["青", ""]
+    },
+    {
+      "kanji": "赤",
+      "reading": "あか",
+      "meaning": "red",
+      "radicals": ["赤", ""]
+    },
+    {
+      "kanji": "白",
+      "reading": "しろ",
+      "meaning": "white",
+      "radicals": ["白", ""]
+    },
+    {
+      "kanji": "金",
+      "reading": "きん",
+      "meaning": "gold",
+      "radicals": ["金", ""]
+    },
+    {
+      "kanji": "玉",
+      "reading": "たま",
+      "meaning": "ball, jewel",
+      "radicals": ["王", "丶"]
+    },
+    {
+      "kanji": "石",
+      "reading": "いし",
+      "meaning": "stone",
+      "radicals": ["石", ""]
+    },
+    {
+      "kanji": "男",
+      "reading": "おとこ",
+      "meaning": "man",
+      "radicals": ["田", "力"]
+    },
+    {
+      "kanji": "女",
+      "reading": "おんな",
+      "meaning": "woman",
+      "radicals": ["女", ""]
+    },
+    {
+      "kanji": "子",
+      "reading": "こ",
+      "meaning": "child",
+      "radicals": ["子", ""]
+    },
+    {
+      "kanji": "人",
+      "reading": "ひと",
+      "meaning": "person",
+      "radicals": ["人", ""]
+    },
+    {
+      "kanji": "立",
+      "reading": "たつ",
+      "meaning": "stand",
+      "radicals": ["立", ""]
+    },
+    {
+      "kanji": "生",
+      "reading": "うまれる",
+      "meaning": "life",
+      "radicals": ["生", ""]
+    },
+    {
+      "kanji": "正",
+      "reading": "ただしい",
+      "meaning": "correct",
+      "radicals": ["一", "止"]
+    },
+    {
+      "kanji": "年",
+      "reading": "とし",
+      "meaning": "year",
+      "radicals": ["干", "𠃌"]
+    },
+    {
+      "kanji": "早",
+      "reading": "はやい",
+      "meaning": "early",
+      "radicals": ["日", "十"]
+    },
+    {
+      "kanji": "空",
+      "reading": "そら",
+      "meaning": "sky",
+      "radicals": ["穴", "工"]
+    }
+  ]
+}
